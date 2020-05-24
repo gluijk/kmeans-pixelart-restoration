@@ -18,11 +18,11 @@ PlotScatterRGB=function(M, sub=NULL, radius=0.02) {
 
 
 # INPUT IMAGES PARAMETERS
-pixelart=c("bobafett", "pokemon", "octocat", "sonic")  # TIFF filename
-dimx=c(38, 28, 45, 23)  # width
-dimy=c(43, 24, 41, 33)  # height
-SAFE=c(2, 10, 1, 2)  # border pixels to drop
-K=c(15, 4, 8, 14)  # k-means k
+pixelart=c("bobafett", "pokemon", "octocat", "sonic", "test")  # TIFF filename
+dimx=c(38, 28, 45, 23, 30)  # width
+dimy=c(43, 24, 41, 33, 30)  # height
+SAFE=c(2, 10, 1, 2, 0)  # border pixels to drop
+K=c(15, 4, 9, 14, 2)  # k-means k
 
 
 # LOOP THROUGH PIXELART
@@ -82,7 +82,7 @@ for (n in 1:length(pixelart)) {
     NCOLOURS=K[n]  # k clusters
     set.seed(0)  # reproducible segmentation
     kmeansfit=kmeans(subset(M, select=c("R","G","B")), centers=NCOLOURS,
-        nstart=90000, iter.max=100000)   # high nstart can prevent from
+        nstart=10000, iter.max=10000)   # high nstart can prevent from
     clustering=kmeansfit$cluster         # missing the tiniest clusters
     
     # Clustering histogram
@@ -114,7 +114,7 @@ for (n in 1:length(pixelart)) {
     img_restored[,,3]=imgcentersB
     writeTIFF(img_restored, paste0(pixelart[n],"_restored_",
         DIMX,"x",DIMY,"_",NCOLOURS,".tif"),
-        bits.per.sample=8, compression="LZW")
+        bits.per.sample=16, compression="LZW")
     
     # 3D-plot of centroids
     PlotScatterRGB(centers,
