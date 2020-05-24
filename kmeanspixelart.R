@@ -83,7 +83,7 @@ for (n in 1:length(pixelart)) {
     set.seed(0)  # reproducible segmentation
     kmeansfit=kmeans(subset(M, select=c("R","G","B")), centers=NCOLOURS,
         nstart=10000, iter.max=10000)   # high nstart can prevent from
-    clustering=kmeansfit$cluster         # missing the tiniest clusters
+    clustering=kmeansfit$cluster        # missing the tiniest clusters
     centers=kmeansfit$centers
     
     # Clustering histogram
@@ -94,7 +94,7 @@ for (n in 1:length(pixelart)) {
         colores=c(colores, rgb(centers[h,1], centers[h,2], centers[h,3]))
     }
     hist(clustering, breaks=breaks, col=colores, # lty="blank",
-         main=paste0("'",pixelart[n],"' cluster histogram (k=",
+        main=paste0("'",pixelart[n],"' cluster histogram (k=",
         K[n], ")"), axes=F)
     axis(1, at=breaks, labels=T)
     dev.off()
