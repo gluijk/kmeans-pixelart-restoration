@@ -39,7 +39,7 @@ for (n in 1:length(pixelart)) {
     
     NX=(dim(img)[2]/DIMX)
     NY=(dim(img)[1]/DIMY)
-    img_used=img*0
+    img_used=img*0+0.15
     for (i in 1:DIMY) {
         for (j in 1:DIMX) {
             for (k in 1:3) {
