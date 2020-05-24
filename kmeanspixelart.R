@@ -84,11 +84,16 @@ for (n in 1:length(pixelart)) {
     kmeansfit=kmeans(subset(M, select=c("R","G","B")), centers=NCOLOURS,
         nstart=10000, iter.max=10000)   # high nstart can prevent from
     clustering=kmeansfit$cluster         # missing the tiniest clusters
+    centers=kmeansfit$centers
     
     # Clustering histogram
     png(paste0(pixelart[n],"_histogram.png"), width=512, height=400)
     breaks=seq(0, NCOLOURS, length.out=NCOLOURS+1)
-    hist(clustering, breaks=breaks, col='gray',
+    colores=c()
+    for (h in 1:NCOLOURS) {
+        colores=c(colores, rgb(centers[h,1], centers[h,2], centers[h,3]))
+    }
+    hist(clustering, breaks=breaks, col=colores, # lty="blank",
          main=paste0("'",pixelart[n],"' cluster histogram (k=",
         K[n], ")"), axes=F)
     axis(1, at=breaks, labels=T)
@@ -97,7 +102,6 @@ for (n in 1:length(pixelart)) {
     imgcentersR=array(0, DIMY*DIMX)
     imgcentersG=imgcentersR
     imgcentersB=imgcentersR
-    centers=kmeansfit$centers
     for (i in 1:NCOLOURS) {
         indices=which(clustering==i)
         imgcentersR[indices]=centers[i,1]
