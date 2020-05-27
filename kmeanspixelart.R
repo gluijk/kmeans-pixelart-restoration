@@ -18,11 +18,11 @@ PlotScatterRGB=function(M, sub=NULL, radius=0.02) {
 
 
 # INPUT IMAGES PARAMETERS
-pixelart=c("bobafett", "pokemon", "octocat", "sonic", "test", "babufrik")
-dimx=c(38, 28, 45, 23, 30, 31)  # width
-dimy=c(43, 24, 41, 33, 30, 46)  # height
-SAFE=c(2, 10, 1, 2, 0, 2)  # border pixels to drop
-K=c(15, 4, 9, 14, 2, 13)  # k-means k
+pixelart=c("bobafett", "pokemon", "octocat", "sonic", "babufrik", "test")
+dimx=c(38, 28, 45, 23, 31, 30)  # width
+dimy=c(43, 24, 41, 33, 46, 30)  # height
+SAFE=c(2, 10, 1, 2, 2, 0)  # border pixels to drop
+K=c(15, 4, 9, 14, 13, 2)  # k-means k
 
 
 # LOOP THROUGH PIXELART
