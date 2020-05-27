@@ -8,8 +8,8 @@ PlotScatterRGB=function(M, sub=NULL, radius=0.02) {
     library(rgl)
     open3d()
     for (i in 1:nrow(M)) {
-        spheres3d(M[i,1], M[i,2], M[i,3],
-                  color=rgb(M[i,1], M[i,2], M[i,3]), radius=radius)
+        spheres3d(M[i,1], M[i,2], M[i,3], radius=radius,
+                  color=rgb(M[i,1], M[i,2], M[i,3]))
     }
     bg3d(color="lightgray")
     axes3d()
