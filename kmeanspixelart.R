@@ -1,5 +1,5 @@
 # Restaurando pixelart con R y k-means
-# www.datosimagensonido.com
+# www.overfitting.net
 
 library(tiff)
 
