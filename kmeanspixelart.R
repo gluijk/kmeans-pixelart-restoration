@@ -40,7 +40,7 @@ for (n in 1:length(pixelart)) {
     
     NX=(dim(img)[2]/DIMX)
     NY=(dim(img)[1]/DIMY)
-    img_used=img*0+0.15
+    img_used=img*0+0.15  # gray limits
     for (i in 1:DIMY) {
         yini=round((i-1)*NY+1+SAFE[n])  # height limits
         yfin=round(i*NY-SAFE[n])
