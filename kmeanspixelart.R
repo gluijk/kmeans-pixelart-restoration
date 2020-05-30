@@ -28,27 +28,26 @@ K=c(15, 4, 9, 14, 13, 2)  # k-means k
 
 # LOOP THROUGH PIXELART
 for (n in 1:length(pixelart)) {
-
+    
     img=readTIFF(paste0(pixelart[n], ".tif"), native=F, convert=F)
     
     # MEDIAN AVERAGING
     DIMX=dimx[n]
     DIMY=dimy[n]
     print(paste0("Rescaling '", pixelart[n],
-        "' to ", DIMX, "x", DIMY, " pixels..."))
+                 "' to ", DIMX, "x", DIMY, " pixels..."))
     img_median=array(0, c(DIMY,DIMX,3))
     
     NX=(dim(img)[2]/DIMX)
     NY=(dim(img)[1]/DIMY)
     img_used=img*0+0.15
     for (i in 1:DIMY) {
+        yini=round((i-1)*NY+1+SAFE[n])  # height limits
+        yfin=round(i*NY-SAFE[n])
         for (j in 1:DIMX) {
+            xini=round((j-1)*NX+1+SAFE[n])  # width limits
+            xfin=round(j*NX-SAFE[n])
             for (k in 1:3) {
-                xini=round((j-1)*NX+1+SAFE[n])
-                xfin=round(j*NX-SAFE[n])
-                yini=round((i-1)*NY+1+SAFE[n])
-                yfin=round(i*NY-SAFE[n])
-                
                 img_median[i,j,k]=median(img[yini:yfin, xini:xfin, k])
                 img_used[yini:yfin, xini:xfin, k]=img[yini:yfin, xini:xfin, k]
             }
@@ -56,9 +55,9 @@ for (n in 1:length(pixelart)) {
     }
     
     writeTIFF(img_median, paste0(pixelart[n],"_median_",DIMX,"x",DIMY,".tif"),
-        bits.per.sample=8, compression="LZW")
+              bits.per.sample=8, compression="LZW")
     writeTIFF(img_used, paste0(pixelart[n],"_used.tif"),
-        bits.per.sample=8, compression="LZW")
+              bits.per.sample=8, compression="LZW")
     
     
     # 3D-PLOT OF RGB VALUES
@@ -76,14 +75,14 @@ for (n in 1:length(pixelart)) {
     M[,2]=G
     M[,3]=B
     PlotScatterRGB(M, sub=paste0("'",pixelart[n],"' median values"),
-        radius=0.015)
+                   radius=0.015)
     
     
     # K-MEANS CLUSTERING
     NCOLOURS=K[n]  # k clusters
     set.seed(0)  # reproducible segmentation
     kmeansfit=kmeans(subset(M, select=c("R","G","B")), centers=NCOLOURS,
-        nstart=10000, iter.max=10000)   # high nstart can prevent from
+                     nstart=10000, iter.max=10000)   # high nstart can prevent from
     clustering=kmeansfit$cluster        # missing the tiniest clusters
     centers=kmeansfit$centers
     
@@ -95,8 +94,8 @@ for (n in 1:length(pixelart)) {
         colores=c(colores, rgb(centers[h,1], centers[h,2], centers[h,3]))
     }
     hist(clustering, breaks=breaks, col=colores, # lty="blank",
-        main=paste0("'",pixelart[n],"' cluster histogram (k=",
-        K[n], ")"), axes=F)
+         main=paste0("'",pixelart[n],"' cluster histogram (k=",
+                     K[n], ")"), axes=F)
     axis(1, at=breaks, labels=T)
     dev.off()
     
@@ -118,12 +117,11 @@ for (n in 1:length(pixelart)) {
     img_restored[,,2]=imgcentersG
     img_restored[,,3]=imgcentersB
     writeTIFF(img_restored, paste0(pixelart[n],"_restored_",
-        DIMX,"x",DIMY,"_",NCOLOURS,".tif"),
-        bits.per.sample=16, compression="LZW")
+                                   DIMX,"x",DIMY,"_",NCOLOURS,".tif"),
+              bits.per.sample=16, compression="LZW")
     
     # 3D-plot of centroids
     PlotScatterRGB(centers,
-        sub=paste0("'",pixelart[n],"' centroids (k=",K[n],")"))
-
+                   sub=paste0("'",pixelart[n],"' centroids (k=",K[n],")"))
+    
 }
-
