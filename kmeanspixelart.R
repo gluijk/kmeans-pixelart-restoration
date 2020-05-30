@@ -1,5 +1,6 @@
 # Restaurando pixelart con R y k-means
 # www.overfitting.net
+# https://www.overfitting.net/2020/05/restaurando-pixelart-con-r-y-k-means.html
 
 library(tiff)
 
