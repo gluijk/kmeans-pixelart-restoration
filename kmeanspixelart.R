@@ -1,4 +1,4 @@
-# Restaurando pixelart con R y k-means
+# Restaurando pixel art con R y k-means
 # www.overfitting.net
 # https://www.overfitting.net/2020/05/restaurando-pixelart-con-r-y-k-means.html
 
@@ -26,7 +26,7 @@ SAFE=c(2, 10, 1, 2, 2, 0)  # border pixels to drop
 K=c(15, 4, 9, 14, 13, 2)  # k-means k
 
 
-# LOOP THROUGH PIXELART
+# LOOP THROUGH PIXEL ART
 for (n in 1:length(pixelart)) {
     
     img=readTIFF(paste0(pixelart[n], ".tif"), native=F, convert=F)
