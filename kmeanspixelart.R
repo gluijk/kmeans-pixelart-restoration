@@ -81,10 +81,52 @@ for (n in 1:length(pixelart)) {
     # K-MEANS CLUSTERING
     NCOLOURS=K[n]  # k clusters
     set.seed(0)  # reproducible segmentation
+    
+    
+    # Elbow method plots
+    if (pixelart[n]!='test') {
+        k.values=c()
+        wss=c()
+        for (k in 1:(NCOLOURS+4)) {
+            kmeansfit=kmeans(subset(M, select=c("R","G","B")), centers=k,
+                             nstart=10000, iter.max=10000)
+            k.values=c(k.values,k)
+            wss=c(wss, kmeansfit$tot.withinss)
+        }
+        
+        png(paste0(pixelart[n],"_elbow.png"), width=512, height=400)
+        plot(k.values, wss,
+             main=paste0("'",pixelart[n],"' elbow method (optimal k=",
+                         K[n], ")"),
+             type="b", pch=19,
+             xlab="k clusters",
+             ylab="Within-clusters sum of squares",
+             xaxt="n")
+        axis(side=1, at=c(1:(NCOLOURS+4)), cex.axis=0.8)
+        abline(v=NCOLOURS, col='red', lty='dotted')
+        dev.off()    
+        
+        png(paste0(pixelart[n],"_elbow_log.png"), width=512, height=400)
+        plot(k.values, log(wss),
+             main=paste0("'",pixelart[n],"' elbow method (optimal k=",
+                         K[n], ")"),
+             type="b", pch=19,
+             xlab="k clusters",
+             ylab="Within-clusters sum of squares (log)",
+             xaxt="n")
+        axis(side=1, at=c(1:(NCOLOURS+4)), cex.axis=0.8)
+        abline(v=NCOLOURS, col='red', lty='dotted')
+        dev.off()
+    }
+    
+    
+    # Optimal k-means
+    set.seed(0)  # reproducible segmentation
     kmeansfit=kmeans(subset(M, select=c("R","G","B")), centers=NCOLOURS,
-                     nstart=10000, iter.max=10000)   # high nstart can prevent from
-    clustering=kmeansfit$cluster        # missing the tiniest clusters
+            nstart=10000, iter.max=10000)  # high nstart can prevent from
+    clustering=kmeansfit$cluster           # missing the tiniest clusters
     centers=kmeansfit$centers
+    
     
     # Clustering histogram
     png(paste0(pixelart[n],"_histogram.png"), width=512, height=400)
@@ -99,6 +141,8 @@ for (n in 1:length(pixelart)) {
     axis(1, at=breaks, labels=T)
     dev.off()
     
+    
+    # Restored image
     imgcentersR=array(0, DIMY*DIMX)
     imgcentersG=imgcentersR
     imgcentersB=imgcentersR
